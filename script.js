@@ -53,7 +53,7 @@ async function sInscrire() {
 
     if (error) return alert('Erreur : ' + error.message);
     
-    alert('✅ Inscription réussie ! Vous pouvez vous connecter.');
+    alert(' Inscription réussie ! Vous pouvez vous connecter.');
     afficherPage('pageConnexion');
 }
 
@@ -69,7 +69,7 @@ async function seConnecter() {
         .eq('mot_de_passe', mdp)
         .single();
 
-    if (error || !data) return alert('❌ Identifiants incorrects.');
+    if (error || !data) return alert(' Identifiants incorrects.');
 
     utilisateurActif = data;
     localStorage.setItem('bsl_utilisateur', JSON.stringify(data.email));
