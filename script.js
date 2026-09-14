@@ -6,6 +6,18 @@ const SUPABASE_CLE = "sb_publishable_uQ52MvwTFa3M54xEDTAZFQ_7UH2FHDr";
 const { createClient } = supabase;
 const supabase = createClient(SUPABASE_URL, SUPABASE_CLE);
 
+// ========== FONCTION VOIR/CACHER MOT DE PASSE (ŒIL) ==========
+function voirMotDePasse(idChamp, element) {
+    const champ = document.getElementById(idChamp);
+    if (champ.type === "password") {
+        champ.type = "text";
+        element.textContent = "👁️‍🗨️";
+    } else {
+        champ.type = "password";
+        element.textContent = "👁️";
+    }
+}
+
 // ========== GESTION MENU ==========
 const menuBtn = document.getElementById('menuBtn');
 const menuOverlay = document.getElementById('menuOverlay');
@@ -82,6 +94,7 @@ function deconnexion() {
     utilisateurActif = null;
     localStorage.removeItem('bsl_utilisateur');
     afficherPage('pageConnexion');
+    menuBtn.style.display = 'none';
     document.body.removeAttribute('data-theme');
     document.getElementById('btnClair').classList.add('active');
     document.getElementById('btnSombre').classList.remove('active');
