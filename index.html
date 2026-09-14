@@ -10,18 +10,18 @@
 </head>
 <body>
 
-    <!-- BOUTON MENU -->
-    <button class="menu-btn" id="menuBtn">☰</button>
+    <!-- BOUTON MENU — CACHÉ PAR DÉFAUT -->
+    <button class="menu-btn" id="menuBtn" style="display:none;">☰</button>
 
     <!-- MENU DEPLOYANT -->
     <nav class="menu-overlay" id="menuOverlay">
         <button class="close-menu" id="closeMenu">×</button>
-        <a href="#accueil" onclick="afficherPage('pageAccueil'); fermerMenu()">🏠 Accueil</a>
-        <a href="#catalogue" onclick="afficherPage('pageCatalogue'); fermerMenu()">📦 Catalogue</a>
-        <a href="#services" onclick="afficherPage('pageServices'); fermerMenu()">🛠️ Services</a>
+        <a href="#accueil" onclick="afficherPage('pageAccueil'); fermerMenu()"> Accueil</a>
+        <a href="#catalogue" onclick="afficherPage('pageCatalogue'); fermerMenu()"> Catalogue</a>
+        <a href="#services" onclick="afficherPage('pageServices'); fermerMenu()"> Services</a>
         <a href="#messagerie" onclick="afficherPage('pageMessagerie'); fermerMenu()">💬 Messagerie</a>
         <a href="#contact" onclick="afficherPage('pageContact'); fermerMenu()">📞 Contact</a>
-        <a href="#" onclick="deconnexion(); fermerMenu()">🚪 Se déconnecter</a>
+        <a href="#" onclick="deconnexion(); fermerMenu()"> Se déconnecter</a>
     </nav>
 
     <!-- PAGE CONNEXION -->
@@ -34,7 +34,10 @@
             <label>Email</label>
             <input type="email" id="connEmail" placeholder="votre@email.com">
             <label>Mot de passe</label>
-            <input type="password" id="connMdp" placeholder="Votre mot de passe">
+            <div class="mdp-conteneur">
+                <input type="password" id="connMdp" placeholder="Votre mot de passe">
+                <span class="oeil" onclick="voirMotDePasse('connMdp', this)">👁️</span>
+            </div>
             <button onclick="seConnecter()">Se connecter</button>
         </div>
         <div class="link">Pas encore inscrit ? <span onclick="afficherPage('pageInscription')">Créer un compte</span></div>
@@ -51,7 +54,10 @@
             <label>Email</label>
             <input type="email" id="inscEmail" placeholder="votre@email.com">
             <label>Choisissez un mot de passe</label>
-            <input type="password" id="inscMdp" placeholder="Au moins 6 caractères">
+            <div class="mdp-conteneur">
+                <input type="password" id="inscMdp" placeholder="Au moins 6 caractères">
+                <span class="oeil" onclick="voirMotDePasse('inscMdp', this)">👁️</span>
+            </div>
             <button onclick="sInscrire()">S'inscrire</button>
         </div>
         <div class="link">Déjà inscrit ? <span onclick="afficherPage('pageConnexion')">Se connecter</span></div>
@@ -73,7 +79,7 @@
         <div class="card presentation">
             <p>
                 <strong>BSL La Puissance Zénith</strong> est une entreprise reconnue pour sa fiabilité et son engagement envers ses clients. Implantée à Baname, elle se spécialise dans les solutions d'énergie solaire, l'électronique, les télécommunications et le commerce général.<br><br>
-                ▪️ <strong>Adresse :</strong> Zangnanado-Baname-gbatezoume<br>
+                • <strong>Adresse :</strong> Zangnanado-Baname-gbatezoume<br>
                 🕒 <strong>Horaires :</strong> 24h/24 — Toujours à votre service
             </p>
         </div>
@@ -123,4 +129,4 @@
 
     <script src="script.js"></script>
 </body>
-              </html>
+                                        </html>
