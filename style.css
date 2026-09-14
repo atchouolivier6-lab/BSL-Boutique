@@ -119,6 +119,24 @@ h2 {
     color: var(--accent);
 }
 
+/* ==== CHAMP MOT DE PASSE AVEC ŒIL ==== */
+.mdp-conteneur {
+    position: relative;
+}
+.mdp-conteneur input {
+    width: 100%;
+    padding-right: 45px;
+}
+.oeil {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 20px;
+    user-select: none;
+}
+
 /* ==== CARTES & FORMULAIRES ==== */
 .card {
     background: var(--bg-card);
@@ -211,4 +229,4 @@ button:hover {
 
 .hidden {
     display: none !important;
-  }
+                    }
