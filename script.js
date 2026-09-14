@@ -1,24 +1,22 @@
-// ========== CONFIGURATION SUPABASE ==========
 const SUPABASE_URL = "https://xkzijtjjtzookaipycvb.supabase.co";
 const SUPABASE_CLE = "sb_publishable_uQ52MvwTFa3M54xEDTAZFQ_7UH2FHDr";
 
-// Initialisation de la connexion
 const { createClient } = supabase;
 const supabase = createClient(SUPABASE_URL, SUPABASE_CLE);
 
-// ========== FONCTION VOIR/CACHER MOT DE PASSE (ŒIL) ==========
+// VOIR / CACHER MOT DE PASSE
 function voirMotDePasse(idChamp, element) {
     const champ = document.getElementById(idChamp);
     if (champ.type === "password") {
         champ.type = "text";
-        element.textContent = "👁️‍🗨️";
+        element.textContent = "CACHER";
     } else {
         champ.type = "password";
-        element.textContent = "👁️";
+        element.textContent = "VOIR";
     }
 }
 
-// ========== GESTION MENU ==========
+// MENU
 const menuBtn = document.getElementById('menuBtn');
 const menuOverlay = document.getElementById('menuOverlay');
 const closeMenu = document.getElementById('closeMenu');
@@ -27,7 +25,7 @@ menuBtn.addEventListener('click', () => menuOverlay.classList.add('open'));
 closeMenu.addEventListener('click', () => menuOverlay.classList.remove('open'));
 function fermerMenu() { menuOverlay.classList.remove('open'); }
 
-// ========== GESTION PAGES ==========
+// NAVIGATION PAGES
 function afficherPage(idPage) {
     document.querySelectorAll('.page').forEach(p => {
         p.classList.remove('active');
@@ -37,18 +35,23 @@ function afficherPage(idPage) {
     document.getElementById(idPage).classList.add('active');
 }
 
-// ========== GESTION UTILISATEUR ==========
 let utilisateurActif = null;
 
-// Inscription — Sauvegarde dans Supabase
+// INSCRIPTION COMPLETE
 async function sInscrire() {
+    let nom = document.getElementById('inscNom').value.trim();
+    let prenom = document.getElementById('inscPrenom').value.trim();
     let email = document.getElementById('inscEmail').value.trim();
     let mdp = document.getElementById('inscMdp').value;
-    
-    if (!email || !mdp) return alert('Veuillez remplir tous les champs.');
-    if (mdp.length < 6) return alert('Mot de passe trop court (6 caractères minimum).');
 
-    // Vérifier si déjà inscrit
+    if (!nom || !prenom || !email || !mdp) {
+        return alert('Veuillez remplir TOUS les champs.');
+    }
+    if (mdp.length < 6) {
+        return alert('Le mot de passe doit contenir au moins 6 caractères.');
+    }
+
+    // Vérifier si email existe déjà
     const { data: existe } = await supabase
         .from('utilisateurs')
         .select('email')
@@ -56,20 +59,29 @@ async function sInscrire() {
         .single()
         .catch(() => ({ data: null }));
 
-    if (existe) return alert('Cet email est déjà utilisé.');
+    if (existe) {
+        return alert('Cette adresse email est déjà utilisée.');
+    }
 
-    // Insérer dans Supabase
+    // Insérer le nouvel utilisateur
     const { error } = await supabase
         .from('utilisateurs')
-        .insert([{ email: email, mot_de_passe: mdp }]);
+        .insert([{ 
+            nom: nom,
+            prenom: prenom,
+            email: email, 
+            mot_de_passe: mdp 
+        }]);
 
-    if (error) return alert('Erreur : ' + error.message);
-    
-    alert(' Inscription réussie ! Vous pouvez vous connecter.');
+    if (error) {
+        return alert('Erreur : ' + error.message);
+    }
+
+    alert('Inscription réussie ! Vous pouvez vous connecter.');
     afficherPage('pageConnexion');
 }
 
-// Connexion — Vérifie dans Supabase
+// CONNEXION
 async function seConnecter() {
     let email = document.getElementById('connEmail').value.trim();
     let mdp = document.getElementById('connMdp').value;
@@ -81,7 +93,9 @@ async function seConnecter() {
         .eq('mot_de_passe', mdp)
         .single();
 
-    if (error || !data) return alert(' Identifiants incorrects.');
+    if (error || !data) {
+        return alert('Identifiants incorrects. Veuillez vérifier votre email et votre mot de passe.');
+    }
 
     utilisateurActif = data;
     localStorage.setItem('bsl_utilisateur', JSON.stringify(data.email));
@@ -89,7 +103,7 @@ async function seConnecter() {
     menuBtn.style.display = 'block';
 }
 
-// Déconnexion
+// DECONNEXION
 function deconnexion() {
     utilisateurActif = null;
     localStorage.removeItem('bsl_utilisateur');
@@ -101,7 +115,7 @@ function deconnexion() {
     localStorage.removeItem('bsl_theme');
 }
 
-// ========== GESTION THÈME ==========
+// CHOIX THEME
 function choisirTheme(theme) {
     if (theme === 'sombre') {
         document.body.setAttribute('data-theme', 'sombre');
@@ -115,15 +129,13 @@ function choisirTheme(theme) {
     localStorage.setItem('bsl_theme', theme);
 }
 
-// ========== AU CHARGEMENT DE LA PAGE ==========
+// AU CHARGEMENT
 window.onload = () => {
-    menuBtn.style.display = 'none'; // Caché avant connexion
+    menuBtn.style.display = 'none';
 
-    // Restaurer thème
     let sauvegardeTheme = localStorage.getItem('bsl_theme');
     if (sauvegardeTheme === 'sombre') choisirTheme('sombre');
 
-    // Restaurer session si déjà connecté
     let sauvegardeUser = localStorage.getItem('bsl_utilisateur');
     if (sauvegardeUser) {
         utilisateurActif = { email: sauvegardeUser };
